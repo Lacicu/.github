@@ -15,10 +15,10 @@ on:
       ecrRepository: # set this to your Amazon ECR repository name
         required: true
         type: string
-      ecsService: # set this to your Amazon ECS service name
+      ecsCluster: # set this to your Amazon ECS cluster name
         required: true
         type: string
-      ecsCluster: # set this to your Amazon ECS cluster name
+      ecsService: # set this to your Amazon ECS service name
         required: true
         type: string
       ecsTaskDefinition: # set this to the path to your Amazon ECS task definition, e.g. .aws/task-definition.json
@@ -28,9 +28,9 @@ on:
         required: true
         type: string
     secrets:
-      AWS_ACCESS_KEY_ID:
+      awsAccessKeyId:
         required: true
-      AWS_SECRET_ACCESS_KEY:
+      awsSecretAccessKey:
         required: true
 
 jobs:
@@ -47,8 +47,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ secrets.awsAccessKeyId }}
+          aws-secret-access-key: ${{ secrets.awsSecretAccessKey }}
           aws-region: ${{ inputs.awsRegion }}
 
       - name: Login to Amazon ECR
@@ -72,14 +72,14 @@ jobs:
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: ${{ env.ECS_TASK_DEFINITION }}
-          container-name: ${{ env.CONTAINER_NAME }}
+          task-definition: ${{ inputs.ecsTaskDefinition }}
+          container-name: ${{ inputs.ecsContainerName }}
           image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: ${{ env.ECS_SERVICE }}
-          cluster: ${{ env.ECS_CLUSTER }}
+          service: ${{ inputs.ecsService }}
+          cluster: ${{ inputs.ecsCluster }}
           wait-for-service-stability: true
