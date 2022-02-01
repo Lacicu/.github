@@ -1,5 +1,0 @@
-{
-  "name": "Release ECS Workflow",
-  "description": "Workflow to release docker image to aws ecs",
-  "iconName": "aws-ecs"
-}
