@@ -54,7 +54,7 @@ jobs:
           echo "BRANCH=$branch" >> $GITHUB_ENV
 
       - name: Check Branch Name
-        if: env.BRANCH != ${{ env.TARGET_BRANCH }}
+        if: env.BRANCH != env.TARGET_BRANCH
         run: exit 1
         env:
           TARGET_BRANCH: ${{ inputs.targetBranch }}
