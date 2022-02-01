@@ -1,5 +1,0 @@
-{
-  "name": "[Prod] Deploy to Amazon ECS",
-  "description": "Workflow to deploy docker image to aws ecs for prod",
-  "iconName": "aws-ecs"
-}
