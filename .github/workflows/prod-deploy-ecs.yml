@@ -1,28 +1,40 @@
 name: (Prod) Deploy to Amazon ECS
 
-env:
-  # configuration for git
-  TARGET_BRANCH: MY_TARGET_BRANCH             # set this to your branch, e.g. master
-
-  # configuration for docker
-  # used for the below command
-  # docker build -t ** -f $DOCKER_FILE_PATH $DOCKER_ROOT_PATH
-  DOCKER_FILE_PATH: MY_DOCKER_FILE_PATH       # set this to your docker file path, e.g. docker/product.dockerfile
-  DOCKER_ROOT_PATH: DOCKER_ROOT_PATH          # set this to your docker root path, e.g. docker/
-
-  # configuration for aws
-  AWS_REGION: MY_AWS_REGION                   # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: MY_ECR_REPOSITORY           # set this to your Amazon ECR repository name
-  ECS_SERVICE: MY_ECS_SERVICE                 # set this to your Amazon ECS service name
-  ECS_CLUSTER: MY_ECS_CLUSTER                 # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: MY_ECS_TASK_DEFINITION # set this to the path to your Amazon ECS task definition, e.g. .aws/task-definition.json
-  CONTAINER_NAME: MY_CONTAINER_NAME           # set this to the name of the container in the containerDefinitions section of your task definition
-
-# change on condition if needed
 on:
-  push:
-    tags:
-      - release_*
+  workflow_call:
+    inputs:
+      targetBranch: # set this to your branch, e.g. master
+        required: true
+        type: string
+      dockerFilePath: # set this to your docker file path, e.g. docker/product.dockerfile
+        required: true
+        type: string
+      dockerRootPath: # set this to your docker root path, e.g. docker/
+        required: true
+        type: string
+      awsRegion: # set this to your preferred AWS region, e.g. ap-northeast-1
+        required: true
+        type: string
+      ecrRepository: # set this to your Amazon ECR repository name
+        required: true
+        type: string
+      ecsCluster: # set this to your Amazon ECS cluster name
+        required: true
+        type: string
+      ecsService: # set this to your Amazon ECS service name
+        required: true
+        type: string
+      ecsTaskDefinition: # set this to the path to your Amazon ECS task definition, e.g. .aws/task-definition.json
+        required: true
+        type: string
+      ecsContainerName: # set this to the name of the container in the containerDefinitions section of your task definition
+        required: true
+        type: string
+    secrets:
+      awsAccessKeyId:
+        required: true
+      awsSecretAccessKey:
+        required: true
 
 jobs:
   check-branch:
@@ -44,10 +56,12 @@ jobs:
       - name: Check Branch Name
         if: env.BRANCH != ${{ env.TARGET_BRANCH }}
         run: exit 1
+        env:
+          TARGET_BRANCH: ${{ inputs.targetBranch }}
 
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     needs: check-branch
 
     steps:
@@ -59,9 +73,9 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_DEFAULT_REGION }}
+          aws-access-key-id: ${{ secrets.awsAccessKeyId }}
+          aws-secret-access-key: ${{ secrets.awsSecretAccessKey }}
+          aws-region: ${{ inputs.awsRegion }}
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -70,6 +84,9 @@ jobs:
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
         env:
+          DOCKER_FILE_PATH: ${{ inputs.dockerFilePath }}
+          DOCKER_ROOT_PATH: ${{ inputs.dockerRootPath }}
+          ECR_REPOSITORY: ${{ inputs.ecrRepository }}
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.ref }} # use tag name
         run: |
@@ -81,15 +98,14 @@ jobs:
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: ${{ env.ECS_TASK_DEFINITION }}
-          container-name: ${{ env.CONTAINER_NAME }}
+          task-definition: ${{ inputs.ecsTaskDefinition }}
+          container-name: ${{ inputs.ecsContainerName }}
           image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: ${{ env.ECS_SERVICE }}
-          cluster: ${{ env.ECS_CLUSTER }}
+          service: ${{ inputs.ecsService }}
+          cluster: ${{ inputs.ecsCluster }}
           wait-for-service-stability: true
-
