@@ -1,8 +1,12 @@
-name: (Dev) Deploy to Amazon ECS
+name: Deploy to Amazon ECS
 
 on:
   workflow_call:
     inputs:
+      useTag: # set bool choose to use tag
+        type: boolean
+        required: false
+        default: false
       dockerFilePath: # set this to your docker file path, e.g. docker/product.dockerfile
         required: true
         type: string
@@ -62,8 +66,15 @@ jobs:
           DOCKER_ROOT_PATH: ${{ inputs.dockerRootPath }}
           ECR_REPOSITORY: ${{ inputs.ecrRepository }}
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }} # use random string
+          UES_TAG: ${{ inputs.useTag }}
+          IMAGE_TAG_SHA: ${{ github.sha }}
+          IMAGE_TAG_NAME: ${{ github.github.ref_name }}
         run: |
+          if [ env.UES_TAG ]; then
+            IMAGE_TAG=$IMAGE_TAG_SHA
+          else
+            IMAGE_TAG=$IMAGE_TAG_NAME
+          fi
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f $DOCKER_FILE_PATH $DOCKER_ROOT_PATH
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
