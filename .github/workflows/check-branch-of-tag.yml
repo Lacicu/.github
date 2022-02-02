@@ -9,7 +9,7 @@ on:
     outputs:
       success:
         description: "Result of checking the branch name"
-        value: ${{ jobs.check-branch.outputs.success }}
+        value: ${{ jobs.check.outputs.success }}
 
 jobs:
   check:
