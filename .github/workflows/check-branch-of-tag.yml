@@ -12,7 +12,7 @@ on:
         value: ${{ jobs.check-branch.outputs.success }}
 
 jobs:
-  check-branch:
+  check:
     runs-on: ubuntu-latest
     timeout-minutes: 3
 
@@ -43,4 +43,4 @@ jobs:
           TARGET_BRANCH: ${{ inputs.targetBranch }}
 
       - name: Show Result
-        run: echo ${{ env.success }}
+        run: echo ${{ steps.check.outputs.success }}
