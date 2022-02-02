@@ -66,14 +66,14 @@ jobs:
           DOCKER_ROOT_PATH: ${{ inputs.dockerRootPath }}
           ECR_REPOSITORY: ${{ inputs.ecrRepository }}
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          UES_TAG: ${{ inputs.useTag }}
+          USE_TAG: ${{ inputs.useTag }}
           IMAGE_TAG_SHA: ${{ github.sha }}
           IMAGE_TAG_NAME: ${{ github.github.ref_name }}
         run: |
-          if [ env.UES_TAG ]; then
-            IMAGE_TAG=$IMAGE_TAG_SHA
-          else
+          if "${USE_TAG}"; then
             IMAGE_TAG=$IMAGE_TAG_NAME
+          else
+            IMAGE_TAG=$IMAGE_TAG_SHA
           fi
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f $DOCKER_FILE_PATH $DOCKER_ROOT_PATH
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
