@@ -34,7 +34,7 @@ jobs:
       - name: Check Branch Name
         id: check
         run: |
-          if [ env.BRANCH == env.TARGET_BRANCH ]; then
+          if [ "env.BRANCH" == "env.TARGET_BRANCH" ]; then
               echo "::set-output name=success::1"
           else
               echo "::set-output name=success::0"
