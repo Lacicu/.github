@@ -41,6 +41,3 @@ jobs:
           fi
         env:
           TARGET_BRANCH: ${{ inputs.targetBranch }}
-
-      - name: Show Result
-        run: echo ${{ steps.check.outputs.success }}
