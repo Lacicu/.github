@@ -41,3 +41,6 @@ jobs:
           fi
         env:
           TARGET_BRANCH: ${{ inputs.targetBranch }}
+
+      - name: Show Result
+        run: echo ${{ env.success }}
