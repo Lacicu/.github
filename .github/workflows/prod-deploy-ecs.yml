@@ -37,34 +37,24 @@ on:
         required: true
 
 jobs:
-  check-branch:
-    runs-on: ubuntu-latest
-    timeout-minutes: 3
+  check:
+    name: check-branch
+    uses: Lacicu/.github/.github/workflows/check-branch-of-tag.yml@master
+    with:
+      targetBranch: ${{ inputs.targetBranch }}
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
-      - name: Get Branch Name
-        run: |
-          raw=$(git branch -r --contains ${{ github.ref }})
-          branch=${raw##*/}
-          echo "BRANCH=$branch" >> $GITHUB_ENV
-
-      - name: Check Branch Name
-        if: env.BRANCH != env.TARGET_BRANCH
-        run: exit 1
-        env:
-          TARGET_BRANCH: ${{ inputs.targetBranch }}
-
-  deploy:
+  release:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    needs: check-branch
+    needs: check
 
     steps:
+      - name: echo
+        if: env.success != 1
+        run: exit 1
+        env:
+          success: ${{ needs.check.outputs.success }}
+
       - name: Checkout
         uses: actions/checkout@v2
         with:
