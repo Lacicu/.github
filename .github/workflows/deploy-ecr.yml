@@ -25,7 +25,7 @@ on:
       awsSecretAccessKey:
         required: true
     outputs:
-      image:
+      imageName:
         description: "Name of the uploaded image"
         value: ${{ jobs.deploy.outputs.image }}
 
