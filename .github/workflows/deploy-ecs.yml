@@ -51,7 +51,7 @@ jobs:
         with:
           task-definition: ${{ inputs.ecsTaskDefinition }}
           container-name: ${{ inputs.ecsContainerName }}
-          image: ${{ inputs.imageName }}
+          image: ${{ steps.login-ecr.outputs.registry }}/${{ inputs.imageName }}
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1

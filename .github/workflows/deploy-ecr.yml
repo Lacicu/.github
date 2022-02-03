@@ -64,13 +64,13 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           USE_TAG: ${{ inputs.useTag }}
           IMAGE_TAG_SHA: ${{ github.sha }}
-          IMAGE_TAG_NAME: ${{ github.ref_name }}
+          GITHUB_REFNAME: ${{ github.ref_name }}
         run: |
           if "${USE_TAG}"; then
-            IMAGE_TAG=$IMAGE_TAG_NAME
+            IMAGE_TAG=$GITHUB_REFNAME
           else
             IMAGE_TAG=$IMAGE_TAG_SHA
           fi
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f $DOCKER_FILE_PATH $DOCKER_ROOT_PATH
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          echo "::set-output name=image::$ECR_REPOSITORY:$IMAGE_TAG"
