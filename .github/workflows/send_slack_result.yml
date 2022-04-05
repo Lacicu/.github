@@ -40,7 +40,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "<${{ github.event.pull_request.html_url || github.event.head_commit.url }}|${{ github.event.head_commit.message}}>\n\n$GITHUB_REF##*/\n\n<https://github.com/${{ github.repository }}|:github:${{ github.repository }}>"
+                    "text": "<${{ github.event.pull_request.html_url || github.event.head_commit.url }}|${{ github.event.head_commit.message}}>\n\n${{ github.ref }}\n\n<https://github.com/${{ github.repository }}|:github:${{ github.repository }}>"
                   }
                 },
                 {
