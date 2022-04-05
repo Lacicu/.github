@@ -39,7 +39,7 @@ jobs:
                 {
                   "type": "section",
                   "text":{
-                    "type": "mrkdown",
+                    "type": "mrkdwn",
                     "text": "<https://gituhub.com/${{ github.repository }}|:github:${{ github.repository }}>"
                   }
                 },
