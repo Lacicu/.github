@@ -30,7 +30,7 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "Deploy ${{ job.status }} :: ${{ github.repository }}"
+                    "text": "Deploy ${{ job.status }} <https://gituhub.com/${{ github.repository }}|:github:${{ github.repository }}>"
                   }
                 },
                 {
