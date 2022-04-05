@@ -30,11 +30,18 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "Deploy ${{ job.status }} <https://gituhub.com/${{ github.repository }}/|:github:${{ github.repository }}>"
+                    "text": "Deploy ${{ job.status }}"
                   }
                 },
                 {
                   "type": "divider"
+                },
+                {
+                  "type": "section",
+                  "text":{
+                    "type": "mrkdown",
+                    "text": "<https://gituhub.com/${{ github.repository }}|:github:${{ github.repository }}>"
+                  }
                 },
                 {
                   "type": "section",
