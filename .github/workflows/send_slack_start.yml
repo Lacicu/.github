@@ -56,4 +56,4 @@ jobs:
             }
         env:
           TARGET_CHANNEL: ${{inputs.targetChannel}}
-          SLACK_BOT_TOKEN: botToken
+          SLACK_BOT_TOKEN: ${{secrets.botToken}}
