@@ -31,9 +31,7 @@ jobs:
                   "text": {
                     "type": "plain_text",
                     "text": "Start Deploy <https://gituhub.com/${{ github.repository }}/|:github:${{ github.repository }}>"
-                  },
-                  "parse": 'none',
-                  "as_user": true
+                  }
                 },
                 {
                   "type": "divider"
