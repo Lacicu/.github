@@ -30,7 +30,7 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "Deploy ${{ job.status }} :: ${{ github.reposility }}"
+                    "text": "Deploy ${{ job.status }} :: ${{ github.repository }}"
                   }
                 },
                 {
