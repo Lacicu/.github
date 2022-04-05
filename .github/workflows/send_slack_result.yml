@@ -30,8 +30,10 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "Deploy ${{ job.status }} <https://gituhub.com/${{ github.repository }}|:github:${{ github.repository }}>"
-                  }
+                    "text": "Deploy ${{ job.status }} <https://gituhub.com/${{ github.repository }}/|:github:${{ github.repository }}>"
+                  },
+                  "parse": 'none',
+                  "as_user": true
                 },
                 {
                   "type": "divider"

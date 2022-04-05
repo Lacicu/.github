@@ -12,13 +12,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Test
-        env:
-          TARGET_CHANNEL: ${{ inputs.targetChannel }}
-          SLACK_BOT_TOKEN: ${{ secrets.botToken }}
-        run:
-          echo "$TARGET_CHANNEL"
-
       # Check out theis repo
       - uses: actions/checkout@v2
 
@@ -37,8 +30,10 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "Start Deploy :: <https://gituhub.com/${{ github.repository }}|:github:${{ github.repository }}>"
-                  }
+                    "text": "Start Deploy <https://gituhub.com/${{ github.repository }}/|:github:${{ github.repository }}>"
+                  },
+                  "parse": 'none',
+                  "as_user": true
                 },
                 {
                   "type": "divider"
