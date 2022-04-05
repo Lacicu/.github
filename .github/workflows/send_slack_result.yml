@@ -57,9 +57,3 @@ jobs:
         env:
           TARGET_CHANNEL: ${{ inputs.targetChannel }}
           SLACK_BOT_TOKEN: ${{ secrets.botToken }}
-      - name: Test
-        env:
-          TARGET_CHANNEL: ${{ inputs.targetChannel }}
-          SLACK_BOT_TOKEN: ${{ secrets.botToken }}
-        run:
-          echo "$TARGET_CHANNEL"

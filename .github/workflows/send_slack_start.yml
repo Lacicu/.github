@@ -12,6 +12,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Test
+        env:
+          TARGET_CHANNEL: ${{ inputs.targetChannel }}
+          SLACK_BOT_TOKEN: ${{ secrets.botToken }}
+        run:
+          echo "$TARGET_CHANNEL"
+          
       # Check out theis repo
       - uses: actions/checkout@v2
 
