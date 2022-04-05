@@ -21,7 +21,7 @@ jobs:
         id: slack
         uses: slackapi/slack-github-action@v1.18.0
         with:
-          channel-id: $TARGET_CHANNEL
+          channel-id: ${{ inputs.targetChannel }}
           payload: |
             {
               "text": "ビルド結果: ${{ job.status }}\n\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
@@ -55,5 +55,4 @@ jobs:
               ]
             }
         env:
-          TARGET_CHANNEL: ${{ inputs.targetChannel }}
           SLACK_BOT_TOKEN: ${{ secrets.botToken }}
