@@ -22,7 +22,7 @@ jobs:
         uses: slackapi/slack-github-action@v1.16.0
         with:
           channel-id: $TARGET_CHANNEL
-          payload: |
+          payload:
             {
               "text": "ビルド結果: ${{ job.status }}\n\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
               "blocks": [
