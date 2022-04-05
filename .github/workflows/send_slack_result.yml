@@ -19,7 +19,7 @@ jobs:
       # https://github.com/slackapi/slack-github-action
       - name: Send GitHub Action trigger data to Slack workflow
         id: slack
-        uses: slackapi/slack-github-action@v1.16.0
+        uses: slackapi/slack-github-action@v1.18.0
         with:
           channel-id: $TARGET_CHANNEL
           payload: |
@@ -55,5 +55,5 @@ jobs:
               ]
             }
         env:
-          TARGET_CHANNEL: ${{inputs.targetChannel}}
-          SLACK_BOT_TOKEN: ${{secrets.botToken}}
+          TARGET_CHANNEL: ${{ inputs.targetChannel }}
+          SLACK_BOT_TOKEN: ${{ secrets.botToken }}
