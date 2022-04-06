@@ -30,7 +30,7 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "Start Deploy"
+                    "text": "Start Deploy[${{ github.run_id }}]"
                   }
                 },
                 {
@@ -40,17 +40,8 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "<${{ github.event.pull_request.html_url || github.event.head_commit.url }}|${{ github.event.head_commit.message}}>\n\n${{ github.ref_name }}\n\n${{ github.run_id }}\n\n<https://github.com/${{ github.repository }}|:github:${{ github.repository }}>"
+                    "text": "commit: <${{ github.event.pull_request.html_url || github.event.head_commit.url }}|${{ github.event.head_commit.message}}>\n\ntag :${{ github.ref_name }}\n\nrepo: <https://github.com/${{ github.repository }}|${{ github.repository }}>\n\nAuthor: <https://github.com/${{ github.event.sender.login }}|@${{ github.event.sender.login }}>"
                   }
-                },
-                {
-                  "type": "context",
-                  "elements": [
-                    {
-                      "type": "mrkdwn",
-                      "text": "Author: <https://github.com/${{ github.event.sender.login }}|@${{ github.event.sender.login }}>"
-                    }
-                  ]
                 }
               ]
             }
