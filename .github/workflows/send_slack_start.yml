@@ -47,7 +47,7 @@ jobs:
                   "type": "section",
                   ”text": {
                     "type": "mrkdwn",
-                    "text": "${{ githun.run.id }}"
+                    "text": "${{ github.run.id }}"
                   }
                 },
                 {
