@@ -54,11 +54,13 @@ jobs:
           submodules: recursive
           token: ${{ secrets.personalToken }}
 
-      - name: Set up JDK & build jar
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
           java-version: ${{ inputs.javaVersion }}
           distribution: ${{ inputs.javaDistribution }}
+
+      - name: maven build jar
         run: |
           mvn clean
           mvn install -Dmaven.test.skip=true
