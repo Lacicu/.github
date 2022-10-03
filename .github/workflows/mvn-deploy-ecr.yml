@@ -60,10 +60,17 @@ jobs:
           java-version: ${{ inputs.javaVersion }}
           distribution: ${{ inputs.javaDistribution }}
 
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-
+
       - name: maven build jar
         run: |
-          mvn clean
-          mvn install -Dmaven.test.skip=true
+          GITHUB_TOKEN=${{ secrets.personalToken }}
+          mvn -s settings.xml -Dmaven.test.skip=true install
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
